@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "declaration": true,
+    "sourceMap": true,
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "outDir": "./dist",
+    "declarationDir": "./types"
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"],
+}
