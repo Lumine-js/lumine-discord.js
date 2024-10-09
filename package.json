@@ -24,8 +24,23 @@
     "url": "https://github.com/Lumine-js/lumined.js"
   },
   "dependencies": {
+    "@types/axios": "^0.14.0",
     "cli-color": "^2.0.3",
     "node-fetch": "^3.3.2",
     "ws": "^8.14.2"
-  }
+  },
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "CommonJS",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
 }
