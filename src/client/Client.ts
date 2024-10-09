@@ -4,6 +4,8 @@ import {
 import clc from "cli-color";
 import WebSocket from "ws"
 
+import ClientOption from "../interfaces/ClientOption";
+
 export class Client extends EventEmitter {
   private token: string;
   private intents: number;
@@ -22,9 +24,4 @@ export class Client extends EventEmitter {
       this.token = token
     }
   }
-}
-
-export type ClientOption = {
-  token: string,
-  intents: number
 }
