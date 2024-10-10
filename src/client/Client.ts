@@ -8,11 +8,12 @@ import axios, { Axios, AxiosRequestConfig } from "axios"
 import ClientOption from "../interfaces/ClientOption";
 import Activities from "../interfaces/Activities";
 import User from "../interfaces/User";
+import { OPCodes } from "../util/Enum";
 
 import UserClient from "../structure/UserClient";
-import ChatInputInteraction from "../interfaces/ChatInputInteraction";
-import AutocompleteInteraction from "../interfaces/AutocompleteInteraction";
-import ButtonInteraction from "../interfaces/ButtonInteractio";
+import ChatInputInteraction from "../structure/ChatInputInteraction";
+import AutocompleteInteraction from "../structure/AutocompleteInteraction";
+import ButtonInteraction from "../structure/ButtonInteractio";
 
 export class Client extends EventEmitter {
   private token: string | null;
@@ -28,8 +29,8 @@ export class Client extends EventEmitter {
 
   public constructor(option: ClientOption) {
     super()
-    this.token = option?.token
-    this.intents = option?.intents
+    this.token = option?.token || null
+    this.intents = option?.intents || null
     this.YourActivity = {
       activities: [],
       status: "Online"
@@ -42,16 +43,18 @@ export class Client extends EventEmitter {
  * @param {string} token - Angka pertama.
  * @returns {void} - Akan mengeluarkan hasil user.
  */
-  login(token: string): void {
+
+  login(token: string) {
     if (this?.token == null) {
       if (!token) throw Error("Token invalid")
       this.token = token
       console.log("Wellcome to", clc.bold("lumined.js"))
-      if (this.ws) {
-        throw new Error('Client Already Run')
-      }
-      if (this.intents === null) throw new Error("Intents Harus Terisi")
     }
+    if (this.ws) {
+      throw new Error('Client Already Run')
+    }
+    if (this.intents === null) throw new Error("Intents Harus Terisi")
+    return this.startWebsocket()
   }
 
   async requestAPI(method: string, params: string, data: any, headers: any) {
@@ -64,9 +67,11 @@ export class Client extends EventEmitter {
     }
 
     if (headers) {
-      object.headers = {...headers, ...{
-        Authorization: `Bot ${this.token}`
-      }}
+      object.headers = {
+        ...headers, ...{
+          Authorization: `Bot ${this.token}`
+        }
+      }
     }
 
     if (data) object.data = data
@@ -90,16 +95,10 @@ export class Client extends EventEmitter {
 
   private async startWebsocket() {
     let wssurl = `wss://gateway.discord.gg/?v=10&encoding=json`
-    const OPCodes = {
-      HEARTBEAT: 1,
-      IDENTIFY: 2,
-      HELLO: 10,
-      HEARTBEAT_ACK: 11,
-    };
 
-    let BotObjectLogin : {
+    let BotObjectLogin: {
       presence: any,
-      token: string|  null,
+      token: string | null,
       properties: any,
       intents: number | null
     } = {

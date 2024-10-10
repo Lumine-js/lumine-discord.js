@@ -1,5 +1,5 @@
 import BaseInteraction from "./BaseInteraction";
-import * as Constants from "./../util/Constants"
+import * as Constants from "../util/Constants"
 
 //========== CLASS
 class ButtonInteraction extends BaseInteraction {

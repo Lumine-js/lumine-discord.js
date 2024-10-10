@@ -1,9 +1,9 @@
 import BaseInteraction from "./BaseInteraction";
-import * as Constants from "./../util/Constants"
-import * as Enum from "./../util/Enum"
+import * as Constants from "../util/Constants"
+import * as Enum from "../util/Enum"
 
 //========== CLASS
-class ChatInputInteraction extends BaseInteraction {
+class AutocompleteInteraction extends BaseInteraction {
     options?: any
     client: any
 
@@ -36,32 +36,17 @@ class ChatInputInteraction extends BaseInteraction {
     this.id = daneta?.id || null
   }
 
-  reply(msgdata: any) {
-    this.client.requestAPI("POST", Constants.ENDPOINTS.RESPOND_INTERACTION(this.id, this.token), {
-      type: 4,
-      data: msgdata
+  async respond(options = []) {
+    await this.client.requestAPI("POST", Constants.ENDPOINTS.RESPOND_INTERACTION(this.id, this.token), {
+      type: 8,
+      data: {
+        choices: options || []
+      }
     })
   }
 
-  deferReply() {
-    this.client.requestAPI("POST", Constants.ENDPOINTS.RESPOND_INTERACTION(this.id, this.token), {
-      type: 5
-    })
-  }
-
-  followUp(msgdata: any) {
-    this.client.requestAPI("POST", Constants.ENDPOINTS.FOLLOWUP_INTERACTION(this.client.user.id, this.token), msgdata)
-  }
-
-  editReply(msgdata: any) {
-    this.client.requestAPI("PATCH", Constants.ENDPOINTS.EDIT_INTERACTION(this.client.user.id, this.token), msgdata)
-  }
-
-  showModal(modaldata: any) {
-    this.client.requestAPI("POST", Constants.ENDPOINTS.RESPOND_INTERACTION(this.id, this.token), {
-      type: 9,
-      data: modaldata
-    })
+  getFocused(key: string) {
+    return this?.options?.find((x: any) => x.focused === true && x.name === key).value || this?.options[0]?.options?.find((x: any) => x.focused === true && x.name === key).value || this?.options[0]?.options[0]?.options?.find((x: any) => x.focused === true && x.name === key)?.value || null;
   }
 
   getSubcommandGroup(key: string, required = false): string | null {
@@ -109,5 +94,4 @@ class ChatInputInteraction extends BaseInteraction {
   }
 }
 
-
-export default ChatInputInteraction
+export default AutocompleteInteraction

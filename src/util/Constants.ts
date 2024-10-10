@@ -1,41 +1,36 @@
 
 
-module.exports.ResolveColor = (args: string) => {
-    if (!args) return;
+export const ResolveColor: (args: string) => number = (args) => {
+    if (!args) return 3447003; // Default color
+
     if (args.startsWith("#")) {
-        var bbggrr = args.substr(4, 2) + args.substr(2, 2) + args.substr(0, 2);
+        const bbggrr = args.substr(4, 2) + args.substr(2, 2) + args.substr(0, 2);
         return parseInt(bbggrr, 16);
     }
-    args = args.toLowerCase()
-    if (!args.startsWith('#')) {
-        args = args.toLowerCase()
-        switch (args) {
-            case "green":
-                return 3066993
-                break;
-            case "blue":
-                return 3447003
-                break;
-            case "purple":
-                return 10181046
-                break;
-            case "orange":
-                return 15105570
-                break;
-            case "red":
-                return 15158332
-                break;
-            case "yellow":
-                return 16776960
-                break;
-            case "random":
-                var datawarna = [3066993, 10181046, 3447003, 15105570, 15158332, 16776960]
-                return datawarna[Math.floor(Math.random() * datawarna.length)];
-                break;
-        }
 
+    args = args.toLowerCase();
+
+    const colorMap: { [key: string]: number } = {
+        "green": 3066993,
+        "blue": 3447003,
+        "purple": 10181046,
+        "orange": 15105570,
+        "red": 15158332,
+        "yellow": 16776960,
+    };
+
+    if (colorMap[args]) {
+        return colorMap[args];
     }
-}
+
+    if (args === "random") {
+        const colors = Object.values(colorMap);
+        return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    return 3447003;
+};
+
 
 export const ENDPOINTS = {
     RESPOND_INTERACTION: (interaction_id: string, interaction_token: string) => `/interactions/${interaction_id}/${interaction_token}/callback`,

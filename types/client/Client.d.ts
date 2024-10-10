@@ -16,7 +16,7 @@ export declare class Client extends EventEmitter {
    * @param {string} token - Angka pertama.
    * @returns {void} - Akan mengeluarkan hasil user.
    */
-    login(token: string): void;
+    login(token: string): Promise<void>;
     requestAPI(method: string, params: string, data: any, headers: any): Promise<any>;
     private startWebsocket;
     sendWebsocket(op: number, d: any): Promise<void>;

@@ -39,3 +39,10 @@ export enum CommandPermissionType {
     ROLE = 1,
     USER = 2
 }
+
+export enum OPCodes {
+    HEARTBEAT = 1,
+    IDENTIFY = 2,
+    HELLO = 10,
+    HEARTBEAT_ACK = 11,
+};

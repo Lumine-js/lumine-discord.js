@@ -1,3 +1,4 @@
+export declare const ResolveColor: (args: string) => number;
 export declare const ENDPOINTS: {
     RESPOND_INTERACTION: (interaction_id: string, interaction_token: string) => string;
     EDIT_INTERACTION: (application_id: string, interaction_token: string) => string;
